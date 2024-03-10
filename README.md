@@ -14,10 +14,10 @@ This is a new [**React Native**](https://reactnative.dev) project, bootstrapped 
 
 ### For Android
 ```bash
-react-native run-android
+npx react-native run-android
 ```
 
 ### For iOS
 ```bash
-react-native run-ios
+npx react-native run-ios
 ```
