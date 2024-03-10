@@ -1,117 +1,101 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
+import React, {useState} from 'react';
 import {
+  ActivityIndicator,
+  FlatList,
   SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
-  Text,
-  useColorScheme,
   View,
 } from 'react-native';
-
+import HoldingItem from './src/components/holdingItem/HoldingItem';
+import UpstoxHeader from './src/components/upstoxHeader/UpstoxHeader';
+import BottomSheet from './src/components/bottomSheet/BottomSheet';
+import {colors} from './src/theme/Colors';
+import {useStocks} from './useStocks';
 import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+  HiddenComponent,
+  VisibleComponent,
+} from './src/components/bottomSheet/PlBottomSheetComponents';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
-}
+export type HoldingItem = {
+  symbol: string;
+  quantity: number;
+  ltp: number;
+  avgPrice: number;
+  close: number;
+};
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+  const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  const {
+    isLoading,
+    stocksList,
+    totalCurrentValue,
+    totalPlValue,
+    totalInvestmentValue,
+    todayPAndL,
+  } = useStocks();
+
+  function onHandlePress() {
+    setIsBottomSheetOpen(prev => !prev);
+  }
+
+  if (isLoading) {
+    return (
+      <SafeAreaView>
+        <StatusBar />
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator size="large" color={colors.primary} />
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
+    <SafeAreaView style={styles.container}>
+      <StatusBar />
+      <UpstoxHeader />
+      <FlatList
+        data={stocksList}
+        renderItem={({item}: {item: HoldingItem}) => (
+          <HoldingItem
+            symbol={item.symbol}
+            close={item.close}
+            averagePrice={item.avgPrice}
+            quantity={item.quantity}
+            ltp={item.ltp}
+          />
+        )}
+        keyExtractor={(item: HoldingItem) => item.symbol}
       />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
+      <BottomSheet
+        isOpen={isBottomSheetOpen}
+        onHandlePress={onHandlePress}
+        HiddenComponent={
+          <HiddenComponent
+            totalCurrentValue={totalCurrentValue}
+            totalInvestmentValue={totalInvestmentValue}
+            todayPAndL={todayPAndL}
+            totalPlValue={totalPlValue}
+          />
+        }
+        VisibleComponent={<VisibleComponent totalPlValue={totalPlValue} />}
+      />
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  loadingContainer: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 16,
+    height: '100%',
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
+  container: {
+    flex: 1,
+    backgroundColor: colors.darkGrey,
   },
 });
 
