@@ -2,6 +2,7 @@ import React from 'react';
 import {Text, View} from 'react-native';
 import {holdingItemStyles as styles} from './HoldingItemStyles';
 import {formatAmount} from '../../utils/Currency';
+import {messages} from '../../i18n/en';
 
 type HoldingItemProps = {
   symbol: string;
@@ -28,8 +29,8 @@ function HoldingItem(props: HoldingItemProps): React.JSX.Element {
             <Text style={styles.symbolText}>{symbol.toUpperCase()}</Text>
           </View>
           <View style={styles.ltpContainer}>
-            <Text style={styles.ltpText}>LTP:</Text>
-            <Text style={styles.ltpNumText}>{` ${formatAmount(ltp)}`}</Text>
+            <Text style={styles.ltpText}>{messages.ltp}</Text>
+            <Text style={styles.ltpNumText}>{formatAmount(ltp)}</Text>
           </View>
         </View>
         <View style={styles.row2Container}>
@@ -37,10 +38,8 @@ function HoldingItem(props: HoldingItemProps): React.JSX.Element {
             <Text style={styles.quantityText}>{quantity}</Text>
           </View>
           <View style={styles.plContainer}>
-            <Text style={styles.plText}>P/L:</Text>
-            <Text style={styles.plValueText}>
-              {` ${formatAmount(plValue)}`}
-            </Text>
+            <Text style={styles.plText}>{messages.pAndL}</Text>
+            <Text style={styles.plValueText}>{formatAmount(plValue)}</Text>
           </View>
         </View>
       </View>

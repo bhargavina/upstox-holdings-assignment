@@ -1,7 +1,8 @@
 import React from 'react';
-import {View, Text, Animated} from 'react-native';
+import {View, Text} from 'react-native';
 import {formatAmount} from '../../utils/Currency';
 import {plBottomSheetComponentsStyles as styles} from './PlBottomSheetComponentsStyles';
+import {messages} from '../../i18n/en';
 
 type HiddenComponentProps = {
   totalCurrentValue: number;
@@ -21,28 +22,30 @@ export function HiddenComponent(
   return (
     <>
       <View style={styles.rowContainer}>
-        <Text style={styles.bottomSheetHeading}>Current Value:</Text>
+        <Text style={styles.bottomSheetHeading}>{messages.currentValue}</Text>
         <View style={styles.bottomSheetValueContainer}>
           <Text style={styles.bottomSheetValueText}>
-            {` ${formatAmount(totalCurrentValue)}`}
-          </Text>
-        </View>
-      </View>
-      <View style={styles.rowContainer}>
-        <Text style={styles.bottomSheetHeading}>Total Investment:</Text>
-        <View style={styles.bottomSheetValueContainer}>
-          <Text style={styles.bottomSheetValueText}>
-            {` ${formatAmount(totalInvestmentValue)}`}
+            {formatAmount(totalCurrentValue)}
           </Text>
         </View>
       </View>
       <View style={styles.rowContainer}>
         <Text style={styles.bottomSheetHeading}>
-          {"Today's Profit & Loss:"}
+          {messages.totalInvestment}
         </Text>
         <View style={styles.bottomSheetValueContainer}>
           <Text style={styles.bottomSheetValueText}>
-            {` ${formatAmount(todayPAndL)}`}
+            {formatAmount(totalInvestmentValue)}
+          </Text>
+        </View>
+      </View>
+      <View style={styles.rowContainer}>
+        <Text style={styles.bottomSheetHeading}>
+          {messages.todaysProfitAndLoss}
+        </Text>
+        <View style={styles.bottomSheetValueContainer}>
+          <Text style={styles.bottomSheetValueText}>
+            {formatAmount(todayPAndL)}
           </Text>
         </View>
       </View>
@@ -57,13 +60,13 @@ type VisibleComponentProps = {
 export function VisibleComponent(props: VisibleComponentProps) {
   const {totalPlValue} = props;
   return (
-    <Animated.View style={[styles.rowContainer, {marginTop: 16}]}>
-      <Text style={styles.bottomSheetHeading}>Profit & Loss:</Text>
+    <View style={[styles.rowContainer, styles.profitAndLossContainer]}>
+      <Text style={styles.bottomSheetHeading}>{messages.profitAndLoss}</Text>
       <View style={styles.bottomSheetValueContainer}>
         <Text style={styles.bottomSheetValueText}>
-          {` ${formatAmount(totalPlValue)}`}
+          {formatAmount(totalPlValue)}
         </Text>
       </View>
-    </Animated.View>
+    </View>
   );
 }

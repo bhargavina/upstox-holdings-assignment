@@ -5,6 +5,7 @@ export const plBottomSheetComponentsStyles = StyleSheet.create({
   rowContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginVertical: 4,
   },
   bottomSheetHeading: {
     color: colors.black,
@@ -20,5 +21,8 @@ export const plBottomSheetComponentsStyles = StyleSheet.create({
   },
   bottomSheetValueText: {
     color: colors.black,
+  },
+  profitAndLossContainer: {
+    marginVertical: 28,
   },
 });

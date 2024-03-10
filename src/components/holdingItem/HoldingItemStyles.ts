@@ -4,7 +4,6 @@ import {colors} from '../../theme/Colors';
 export const holdingItemStyles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
-
     backgroundColor: colors.white,
   },
   innerContainer: {
@@ -15,6 +14,7 @@ export const holdingItemStyles = StyleSheet.create({
   row1Container: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginBottom: 4,
   },
   symbolContainer: {},
   symbolText: {
@@ -36,6 +36,7 @@ export const holdingItemStyles = StyleSheet.create({
   row2Container: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginTop: 4,
   },
   quantityContainer: {},
   quantityText: {color: colors.black},
